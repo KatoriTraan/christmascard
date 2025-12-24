@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merry Christmas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --card-red: #8a1c1c;
+            --card-gold: #d4af37;
+            --paper-cream: #fdfbf7;
+            --bg-dark: #0f172a;
+            --bg-light: #1e293b;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Playfair Display', serif;
+            background: radial-gradient(circle at center, var(--bg-light), var(--bg-dark));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1500px; /* Essential for 3D effect */
+        }
+
+        /* --- Snow Container --- */
+        #snow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        /* --- The Card Container --- */
+        .card-wrapper {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            z-index: 10;
+            transition: transform 1s;
+        }
+
+        .card-wrapper:hover {
+            transform: translateY(-10px);
+        }
+
+        /* --- The Card Faces --- */
+        .card-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--card-red);
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(255,255,255,0.1) 0%, transparent 60%),
+                repeating-linear-gradient(45deg, rgba(0,0,0,0.02) 0px, rgba(0,0,0,0.02) 2px, transparent 2px, transparent 4px);
+            transform-origin: left;
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            z-index: 2;
+            border-radius: 5px 10px 10px 5px;
+            box-shadow: 5px 5px 20px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid var(--card-gold);
+        }
+
+        /* The back of the front cover (visible when opened) */
+        .card-front::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--paper-cream);
+            transform: rotateY(180deg);
+            backface-visibility: hidden; /* Hides this when closed */
+            border-radius: 5px 10px 10px 5px;
+        }
+
+        .card-inside {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--paper-cream);
+            border-radius: 5px 10px 10px 5px;
+            z-index: 1;
+            box-shadow: inset 5px 0 10px rgba(0,0,0,0.1); /* Paper shadow near spine */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 30px;
+            box-sizing: border-box;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* --- Decoration --- */
+        .ribbon {
+            width: 60px;
+            height: 60px;
+            background: var(--card-gold);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        
+        .ribbon::before {
+            content: '🎄';
+            font-size: 30px;
+        }
+
+        h1 {
+            font-family: 'Great Vibes', cursive;
+            color: var(--card-gold);
+            font-size: 3.5rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transform: translateZ(20px); /* Lifts text off card slightly */
+        }
+
+        p.click-hint {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+            margin-top: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* --- Inside Text --- */
+        .inside-title {
+            font-family: 'Great Vibes', cursive;
+            color: var(--card-red);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .inside-text {
+            color: #4a4a4a;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .signature {
+            margin-top: 25px;
+            font-style: italic;
+            color: var(--card-gold);
+            font-weight: bold;
+        }
+
+        /* --- Open State Class --- */
+        .open .card-front {
+            transform: rotateY(-140deg);
+        }
+
+        /* --- Animations --- */
+        @keyframes fall {
+            to {
+                transform: translateY(105vh);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="snow-container"></div>
+
+    <div class="card-wrapper" onclick="toggleCard()">
+        <div class="card-inside">
+            <div class="inside-title">Christmas</div>
+            <p class="inside-text">
+                The Season of Love, Joy and Hope
+                <br><br>
+                Giáng sinh năm nay không lạnh như mọi năm cậu nhỉ. Chúc cậu một mùa giáng sinh thật ấm áp, hạnh phúc, rộn ràng niềm vui. Nguyện mọi điều tốt đẹp nhất sẽ luôn đến với cậu. 🎄🎄🎄
+            </p>
+            <div class="signature">- With Love -</div>
+        </div>
+
+        <div class="card-front">
+            <div class="ribbon"></div>
+            <h1>Merry<br>Christmas</h1>
+            <p class="click-hint">(Click to Open)</p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle Card Open/Close
+        function toggleCard() {
+            const card = document.querySelector('.card-wrapper');
+            card.classList.toggle('open');
+        }
+
+        // Snowfall Engine
+        function createSnow() {
+            const container = document.getElementById('snow-container');
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+            
+            // Randomize properties
+            const size = Math.random() * 5 + 2 + 'px'; // 2px to 7px
+            const startPos = Math.random() * 100 + 'vw';
+            const duration = Math.random() * 5 + 5 + 's'; // 5s to 10s fall time
+            const opacity = Math.random() * 0.5 + 0.3;
+
+            snowflake.style.width = size;
+            snowflake.style.height = size;
+            snowflake.style.left = startPos;
+            snowflake.style.animationDuration = duration;
+            snowflake.style.opacity = opacity;
+            
+            // Blur effect for depth
+            if(Math.random() > 0.5) {
+                snowflake.style.filter = "blur(1px)";
+            }
+
+            container.appendChild(snowflake);
+
+            // Clean up DOM
+            setTimeout(() => {
+                snowflake.remove();
+            }, 10000);
+        }
+
+        // Generate snow at intervals
+        setInterval(createSnow, 100);
+    </script>
+</body>
+</html>
